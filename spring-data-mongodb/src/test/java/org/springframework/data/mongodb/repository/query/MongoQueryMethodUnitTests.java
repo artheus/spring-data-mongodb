@@ -235,6 +235,17 @@ public class MongoQueryMethodUnitTests {
 		assertThat(method.isExistsQuery(), is(true));
 	}
 
+	/**
+	 * @see DATAMONGO-1454
+	 */
+	@Test
+	public void createsMongoQueryMethodWithCountProjection() throws Exception {
+
+		MongoQueryMethod method = queryMethod(PersonRepository.class, "countBy");
+
+		assertThat(method.isCountQuery(), is(true));
+	}
+
 	private MongoQueryMethod queryMethod(Class<?> repository, String name, Class<?>... parameters) throws Exception {
 
 		Method method = repository.getMethod(name, parameters);
@@ -281,6 +292,8 @@ public class MongoQueryMethodUnitTests {
 		boolean existsBy();
 
 		Future<Boolean> existsByFuture();
+
+		Integer countBy();
 	}
 
 	interface SampleRepository extends Repository<Contact, Long> {

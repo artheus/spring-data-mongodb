@@ -201,6 +201,17 @@ public class MongoQueryMethod extends QueryMethod {
 	}
 
 	/**
+	 * Returns whether the query is a count projection by checking the return type.
+	 *
+	 * @return
+	 * @since 1.10
+	 */
+	public boolean isCountQuery() {
+		return unwrappedReturnType.isAssignableFrom(Long.class) || unwrappedReturnType.isAssignableFrom(Long.TYPE)
+				|| unwrappedReturnType.isAssignableFrom(Number.class);
+	}
+
+	/**
 	 * Returns the {@link Query} annotation that is applied to the method or {@code null} if none available.
 	 * 
 	 * @return

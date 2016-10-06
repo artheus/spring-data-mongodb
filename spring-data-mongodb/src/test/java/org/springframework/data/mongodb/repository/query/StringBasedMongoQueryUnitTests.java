@@ -373,6 +373,16 @@ public class StringBasedMongoQueryUnitTests {
 		assertThat(mongoQuery.isExistsQuery(), is(true));
 	}
 
+	/**
+	 * @see DATAMONGO-1454
+	 */
+	@Test
+	public void shouldDeriveCountProjectionFromReturnType() throws Exception {
+
+		assertThat(createQueryForMethod("countMethod", String.class).isCountQuery(), is(true));
+		assertThat(createQueryForMethod("countNumberMethod", String.class).isCountQuery(), is(true));
+	}
+
 	private StringBasedMongoQuery createQueryForMethod(String name, Class<?>... parameters) throws Exception {
 
 		Method method = SampleRepository.class.getMethod(name, parameters);
@@ -407,6 +417,12 @@ public class StringBasedMongoQueryUnitTests {
 
 		@Query(value = "{ 'lastname' : ?0 }", delete = true, count = true)
 		void invalidMethod(String lastname);
+
+		@Query(value = "{ 'lastname' : ?0 }")
+		long countMethod(String lastname);
+
+		@Query(value = "{ 'lastname' : ?0 }")
+		Number countNumberMethod(String lastname);
 
 		@Query(value = "?0", fields = "?1")
 		DBObject findByParameterizedCriteriaAndFields(DBObject criteria, Map<String, Integer> fields);

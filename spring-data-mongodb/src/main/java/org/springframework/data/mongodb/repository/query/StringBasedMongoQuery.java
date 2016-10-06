@@ -97,7 +97,7 @@ public class StringBasedMongoQuery extends AbstractMongoQuery {
 		this.fieldSpec = BINDING_PARSER.parseAndCollectParameterBindingsFromQueryIntoBindings(
 				method.getFieldSpecification(), this.fieldSpecParameterBindings);
 
-		this.isCountQuery = method.hasAnnotatedQuery() && method.getQueryAnnotation().count();
+		this.isCountQuery = method.isCountQuery() || (method.hasAnnotatedQuery() && method.getQueryAnnotation().count());
 		this.isExistsQuery = method.isExistsQuery();
 		this.isDeleteQuery = method.hasAnnotatedQuery() && method.getQueryAnnotation().delete();
 
